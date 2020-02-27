@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "A Perl implementation of reCAPTCHA API version v3",
    "author" : [
-      "worthmine <worthmine@cpan.org>"
+      "worthmine <worthmine@gmail.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.1.4, CPAN::Meta::Converter version 2.150010",
@@ -54,6 +54,9 @@
    "release_status" : "unstable",
    "version" : "0.01",
    "x_authority" : "cpan:WORTHMINE",
+   "x_contributors" : [
+      "worthmine <worthmine@cpan.org>"
+   ],
    "x_serialization_backend" : "JSON::PP version 2.27400_02",
    "x_static_install" : 1
 }
