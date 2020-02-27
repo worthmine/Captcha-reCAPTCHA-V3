@@ -42,6 +42,8 @@
       },
       "runtime" : {
          "requires" : {
+            "HTTP::Tiny" : "0",
+            "JSON" : "0",
             "perl" : "5.008001"
          }
       },
