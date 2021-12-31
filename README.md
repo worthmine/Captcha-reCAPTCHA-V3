@@ -30,31 +30,35 @@ This one is especially for Google reCAPTCHA v3, not for v2 because APIs are so d
 
 ## Basic Usage
 
-### new()
+### new( secret => _secret_, sitekey => _sitekey_ \[ query\_name => _query\_name_ \] )
 
 Requires secret and sitekey when constructing.
-You have to get them before running from [here](https://www.google.com/recaptcha/intro/v3.html)
+You have to get them before running from [here](https://www.google.com/recaptcha/intro/v3.html).
 
     my $rc = Captcha::reCAPTCHA::V3->new(
-        secret  => '__YOUR_SECRET__',
-        sitekey => '__YOUR_SITEKEY__',
+       secret  => '__YOUR_SECRET__',
+       sitekey => '__YOUR_SITEKEY__',
+       query_name => '__YOUR_QUERY_NAME__', # Optinal
     );
 
-### verify()
+According to the official document, query\_name defaults to 'g-recaptcha-response'
+so if you changed it another, you have to set _query\_name_ as same.
+
+### verify( _response_ )
 
 Requires just only response key being got from Google reCAPTCHA API.
 
-**DO NOT** add remote address. there is no function for remote address within reCAPTCHA v3
+**DO NOT** add remote address. there is no function for remote address within reCAPTCHA v3.
 
     my $content = $rc->verify($param{'g-recaptcha-response'});
 
-The default _query\_name_ is 'g-recaptcha-response' and it is stocked in constructor
+The default _query\_name_ is 'g-recaptcha-response' and it is stocked in constructor.
 
 so you don't have to change it if you wrote like this:
 
     my $content = $rc->verify($param{ $rc->{'query_name'} });
 
-The response contains JSON so it returns decoded value from JSON
+The response contains JSON so it returns decoded value from JSON.
 
     unless ( $content->{'success'} ) {
        # code for failing like below
@@ -78,11 +82,11 @@ In this method, the response pair SHOULD be set as a hash argument(score pair is
 
 ### verify\_or\_die( response => _response_, \[ score => _score_ \] )
 
-This method is wrapper of `deny_by_score()`, the differense is dying imidiately when fail to verify
+This method is a wrapper of `deny_by_score()`, the differense is dying imidiately when fail to verify.
 
 ### scripts( id => _ID_, \[ action => _action_ \] )
 
-You can insert this somewhere in your &lt;body> tag
+You can insert this somewhere in your &lt;body> tag.
 
 In ordinal HTMLs, you can set this like below:
 
@@ -93,7 +97,7 @@ In ordinal HTMLs, you can set this like below:
     </form>
     EOL
 
-Then you might not have to write some javascripts
+Then you might write less javascript lines.
 
 # NOTES
 

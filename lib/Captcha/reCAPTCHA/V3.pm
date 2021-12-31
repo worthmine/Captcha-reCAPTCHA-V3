@@ -132,31 +132,35 @@ This one is especially for Google reCAPTCHA v3, not for v2 because APIs are so d
 
 =head2 Basic Usage
 
-=head3 new()
+=head3 new( secret => I<secret>, sitekey => I<sitekey> [ query_name => I<query_name> ] )
 
 Requires secret and sitekey when constructing.
-You have to get them before running from L<here|https://www.google.com/recaptcha/intro/v3.html>
+You have to get them before running from L<here|https://www.google.com/recaptcha/intro/v3.html>.
 
  my $rc = Captcha::reCAPTCHA::V3->new(
-     secret  => '__YOUR_SECRET__',
-     sitekey => '__YOUR_SITEKEY__',
+    secret  => '__YOUR_SECRET__',
+    sitekey => '__YOUR_SITEKEY__',
+    query_name => '__YOUR_QUERY_NAME__', # Optinal
  );
 
-=head3 verify()
+According to the official document, query_name defaults to 'g-recaptcha-response'
+so if you changed it another, you have to set I<query_name> as same.
+
+=head3 verify( I<response> )
 
 Requires just only response key being got from Google reCAPTCHA API.
 
-B<DO NOT> add remote address. there is no function for remote address within reCAPTCHA v3
+B<DO NOT> add remote address. there is no function for remote address within reCAPTCHA v3.
 
  my $content = $rc->verify($param{'g-recaptcha-response'});
 
-The default I<query_name> is 'g-recaptcha-response' and it is stocked in constructor
+The default I<query_name> is 'g-recaptcha-response' and it is stocked in constructor.
 
 so you don't have to change it if you wrote like this:
 
  my $content = $rc->verify($param{ $rc->{'query_name'} });
 
-The response contains JSON so it returns decoded value from JSON
+The response contains JSON so it returns decoded value from JSON.
 
  unless ( $content->{'success'} ) {
     # code for failing like below
@@ -176,16 +180,15 @@ C<verify()> requires just only one argument because of compatibility for version
 
 In this method, the response pair SHOULD be set as a hash argument(score pair is optional).
 
-
 =head2 Additional method for lazy(not sudgested)
 
 =head3 verify_or_die( response => I<response>, [ score => I<score> ] )
 
-This method is wrapper of C<deny_by_score()>, the differense is dying imidiately when fail to verify
+This method is a wrapper of C<deny_by_score()>, the differense is dying imidiately when fail to verify.
 
 =head3 scripts( id => I<ID>, [ action => I<action> ] )
 
-You can insert this somewhere in your E<lt>bodyE<gt> tag
+You can insert this somewhere in your E<lt>bodyE<gt> tag.
 
 In ordinal HTMLs, you can set this like below:
 
@@ -196,7 +199,7 @@ In ordinal HTMLs, you can set this like below:
  </form>
  EOL
 
-Then you might not have to write some javascripts
+Then you might write less javascript lines.
 
 =head1 NOTES
 
