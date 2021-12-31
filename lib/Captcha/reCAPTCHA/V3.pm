@@ -126,7 +126,7 @@ Captcha::reCAPTCHA::V3 provides you to integrate Google reCAPTCHA v3 for your we
  
 =head1 DESCRIPTION
 
-Captcha::reCAPTCHA::V3 is inspired from L<Captcha::reCAPTCHA::V2|https://metacpan.org/pod/Captcha::reCAPTCHA::V2>
+Captcha::reCAPTCHA::V3 is inspired from L<Captcha::reCAPTCHA::V2>
 
 This one is especially for Google reCAPTCHA v3, not for v2 because APIs are so defferent.
 
@@ -215,7 +215,7 @@ and L<Issues|https://github.com/worthmine/Captcha-reCAPTCHA-V3/issues> are welco
 
 =over
 
-=item L<Captcha::reCAPTCHA::V2|https://metacpan.org/pod/Captcha::reCAPTCHA::V2>
+=item L<Captcha::reCAPTCHA::V2>
 
 =item L<Google reCAPTCHA v3|https://www.google.com/recaptcha/intro/v3.html>
 

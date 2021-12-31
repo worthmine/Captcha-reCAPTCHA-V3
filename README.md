@@ -24,7 +24,7 @@ Captcha::reCAPTCHA::V3 provides you to integrate Google reCAPTCHA v3 for your we
 
 # DESCRIPTION
 
-Captcha::reCAPTCHA::V3 is inspired from [Captcha::reCAPTCHA::V2](https://metacpan.org/pod/Captcha::reCAPTCHA::V2)
+Captcha::reCAPTCHA::V3 is inspired from [Captcha::reCAPTCHA::V2](https://metacpan.org/pod/Captcha%3A%3AreCAPTCHA%3A%3AV2)
 
 This one is especially for Google reCAPTCHA v3, not for v2 because APIs are so defferent.
 
@@ -111,7 +111,7 @@ and [Issues](https://github.com/worthmine/Captcha-reCAPTCHA-V3/issues) are welco
 
 # SEE ALSO
 
-- [Captcha::reCAPTCHA::V2](https://metacpan.org/pod/Captcha::reCAPTCHA::V2)
+- [Captcha::reCAPTCHA::V2](https://metacpan.org/pod/Captcha%3A%3AreCAPTCHA%3A%3AV2)
 - [Google reCAPTCHA v3](https://www.google.com/recaptcha/intro/v3.html)
 - [Google reCAPTCHA v3 API document](https://developers.google.com/recaptcha/docs/v3)
 
