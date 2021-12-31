@@ -57,11 +57,10 @@ sub deny_by_score {
     croak "invalid score was set: $score" if $score < 0 or 1 < $score;
 
     my $content = $self->verify($response);
-    return $content
-        if $content->{'success'} and $content->{'score'} == 1
-        or $content->{'score'} > $score;
-    unshift @{ $content->{'error-codes'} }, 'too-low-score';
-    $content->{'success'} = 0;
+    if ( $content->{'success'} and $content->{'score'} == 1 || $content->{'score'} < $score ) {
+        unshift @{ $content->{'error-codes'} }, 'too-low-score';
+        $content->{'success'} = 0;
+    }
     return $content;
 }
 
