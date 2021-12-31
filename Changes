@@ -2,6 +2,9 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 
 {{$NEXT}}
 
+0.03 2021-12-31T14:21:59Z
+    - fixed a bug aroud score 
+
 0.02 2021-12-31T11:58:06Z
     - started to use LWP::UserAgent instead of HTTP::Tiny
        Because it is not included in old Perl versions 
