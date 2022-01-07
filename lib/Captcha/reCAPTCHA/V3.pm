@@ -10,6 +10,11 @@ use JSON qw(decode_json);
 use LWP::UserAgent;
 my $ua = LWP::UserAgent->new();
 
+use overload(
+    '""'  => sub { $_[0]->name() },
+    'cmp' => sub { $_[0]->name() cmp $_[1] },
+);
+
 sub new {
     my $class = shift;
     my $self  = bless {}, $class;
@@ -30,6 +35,12 @@ sub new {
     #    =~ m|^\Q/* PLEASE DO NOT COPY AND PASTE THIS CODE. */(function(){|;
     # )| this line is required to fix syntax highlights :)
 
+}
+
+sub name {
+    my $self = shift;
+    return $self->{'query_name'} unless my $value = shift;
+    $self->{'query_name'} = $value;
 }
 
 # verifiers =======================================================================
