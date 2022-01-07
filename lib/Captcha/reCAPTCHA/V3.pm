@@ -5,7 +5,7 @@ use warnings;
 
 our $VERSION = "0.03";
 
-use Carp;
+use Carp qw(carp croak);
 use JSON qw(decode_json);
 use LWP::UserAgent;
 my $ua = LWP::UserAgent->new();
@@ -13,34 +13,34 @@ my $ua = LWP::UserAgent->new();
 use overload(
     '""'  => sub { $_[0]->name() },
     'cmp' => sub { $_[0]->name() cmp $_[1] },
+    '0+'  => sub { croak __PACKAGE__, " can't be treated as a Number" },
 );
 
 sub new {
     my $class = shift;
-    my $self  = bless {}, $class;
+    my $self  = bless {}, ref $class || $class;
     my %attr  = @_;
 
     # Initialize the values for API
+    $self->{'sitekey'}    = $attr{'sitekey'}    || '';    # No need to set sitekey in server-side
     $self->{'secret'}     = $attr{'secret'}     || croak "missing param 'secret'";
-    $self->{'sitekey'}    = $attr{'sitekey'}    || croak "missing param 'sitekey'";
     $self->{'query_name'} = $attr{'query_name'} || 'g-recaptcha-response';
 
-    $self->{'widget_api'} = 'https://www.google.com/recaptcha/api.js?render=' . $attr{'sitekey'};
+    $self->{'widget_api'} = 'https://www.google.com/recaptcha/api.js';
     $self->{'verify_api'} = 'https://www.google.com/recaptcha/api/siteverify';
     return $self;
-
-    #my $res = $ua->get( $self->{'widget_api'} );
-    #croak "something wrong to post by " . $ua->agent(), "\n" unless $res->is_success();
-    #return $self if $res->decoded_content()
-    #    =~ m|^\Q/* PLEASE DO NOT COPY AND PASTE THIS CODE. */(function(){|;
-    # )| this line is required to fix syntax highlights :)
-
 }
 
 sub name {
     my $self = shift;
     return $self->{'query_name'} unless my $value = shift;
     $self->{'query_name'} = $value;
+}
+
+sub sitekey {
+    my $self = shift;
+    return $self->{'sitekey'} unless my $value = shift;
+    $self->{'sitekey'} = $value;
 }
 
 # verifiers =======================================================================
@@ -82,22 +82,40 @@ sub verify_or_die {
     die 'fail to verify reCAPTCHA: ', $content->{'error-codes'}[0], "\n";
 }
 
-# extra routines =======================================================================
+# aroud javascript =======================================================================
+sub scriptURL {
+    my $self    = shift;
+    my %attr    = @_;
+    my $sitekey = $attr{'sitekey'} || $self->{'sitekey'} || croak "missing 'sitekey'";
+    return $self->{'widget_api'} . "?render=$sitekey";
+}
+
+sub scriptTag {
+    my $self    = shift;
+    my %attr    = @_;
+    my $sitekey = $attr{'sitekey'} || $self->{'sitekey'} || croak "missing 'sitekey'";
+    my $url     = $self->scriptURL( sitekey => $sitekey );
+    return qq|<script src="$url" defer></script>|;
+}
+
 sub scripts {
-    my $self   = shift;
-    my %attr   = @_;
-    my $id     = $attr{'id'} or croak "missing the id for Form tag";
-    my $action = $attr{'action'} || 'homepage';
+    my $self    = shift;
+    my %attr    = @_;
+    my $sitekey = $attr{'sitekey'} || $self->{'sitekey'} || croak "missing 'sitekey'";
+    my $simple  = $self->scriptTag(@_);
+    my $id      = $attr{'id'} or croak "missing the id for Form tag";
+    my $action  = $attr{'action'} || 'homepage';
+    my $comment = '// ' unless $attr{'debug'};
     return <<"EOL";
-<script src="$self->{'widget_api'}" defer></script>
+$simple
 <script defer>
-let f = document.getElementById("$id");
-f.onsubmit = function(event){
+let rf = document.getElementById("$id");
+rf.onsubmit = function(event){
     grecaptcha.ready(function() {
-        grecaptcha.execute('$self->{'sitekey'}', { action: '$action' }).then(function(token) {
-            //console.log(token);
-            f.insertAdjacentHTML('beforeend', '<input type="hidden" name="$self->{'query_name'}" value="' + token + '">');
-            f.submit();
+        grecaptcha.execute('$sitekey', { action: '$action' }).then(function(token) {
+            ${comment}console.log(token);
+            rf.insertAdjacentHTML('beforeend', '<input type="hidden" name="$self" value="' + token + '">');
+            rf.submit();
         });
     });
     event.preventDefault();
