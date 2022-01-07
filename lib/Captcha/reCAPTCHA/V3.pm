@@ -140,13 +140,13 @@ Captcha::reCAPTCHA::V3 provides you to integrate Google reCAPTCHA v3 for your we
 
  use Captcha::reCAPTCHA::V3;
  my $rc = Captcha::reCAPTCHA::V3->new(
-     secret  => '__YOUR_SECRET__',
-     sitekey => '__YOUR_SITEKEY__',
+     sitekey => '__YOUR_SITEKEY__', # Optional
+     secret  => '__YOUR_SECRET__',  # Required
  );
  
  ...
  
- my $content = $rc->verify($param{'g-recaptcha-response'});
+ my $content = $rc->verify($param{$rc});
  unless ( $content->{'success'} ) {
     # code for failing like below
     die 'fail to verify reCAPTCHA: ', @{ $content->{'error-codes'} }, "\n";
@@ -160,19 +160,33 @@ This one is especially for Google reCAPTCHA v3, not for v2 because APIs are so d
 
 =head2 Basic Usage
 
-=head3 new( secret => I<secret>, sitekey => I<sitekey> [ query_name => I<query_name> ] )
+=head3 new( secret => I<secret>, [ sitekey => I<sitekey>, query_name => I<query_name> ] )
 
-Requires secret and sitekey when constructing.
+Requires only secret when constructing.
+
+Now you can omit sitekey (from version 0.0.4).
+
 You have to get them before running from L<here|https://www.google.com/recaptcha/intro/v3.html>.
 
  my $rc = Captcha::reCAPTCHA::V3->new(
+    sitekey => '__YOUR_SITEKEY__', # Optinal
     secret  => '__YOUR_SECRET__',
-    sitekey => '__YOUR_SITEKEY__',
     query_name => '__YOUR_QUERY_NAME__', # Optinal
  );
 
 According to the official document, query_name defaults to 'g-recaptcha-response'
 so if you changed it another, you have to set I<query_name> as same.
+
+=head3 name([I<name>])
+
+You can get/set I<query_name> after constuct the object from version 0.0.4
+
+ my $query_name = $rc->name();  # defaults to 'g-recaptcha-response'
+ $rc->name('captcha');          # the I<query_name> is now 'captcha' 
+
+and with overlording, you can get I<query_name> with just like below:
+
+ my $query_name = "$rc";        # means same with $rc->name();
 
 =head3 verify( I<response> )
 
@@ -180,13 +194,11 @@ Requires just only response key being got from Google reCAPTCHA API.
 
 B<DO NOT> add remote address. there is no function for remote address within reCAPTCHA v3.
 
- my $content = $rc->verify($param{'g-recaptcha-response'});
+ my $content = $rc->verify($param{$rc});
 
 The default I<query_name> is 'g-recaptcha-response' and it is stocked in constructor.
 
-so you don't have to change it if you wrote like this:
-
- my $content = $rc->verify($param{ $rc->{'query_name'} });
+But now string-context provides you to get I<query_name> so we don't have to care about it.
 
 The response contains JSON so it returns decoded value from JSON.
 
@@ -214,7 +226,7 @@ In this method, the response pair SHOULD be set as a hash argument(score pair is
 
 This method is a wrapper of C<deny_by_score()>, the differense is dying imidiately when fail to verify.
 
-=head3 scripts( id => I<ID>, [ action => I<action> ] )
+=head3 scripts( id => I<ID>, [ debug => I<Boolen>, action => I<action> ] )
 
 You can insert this somewhere in your E<lt>bodyE<gt> tag.
 
@@ -228,6 +240,11 @@ In ordinal HTMLs, you can set this like below:
  EOL
 
 Then you might write less javascript lines.
+
+From 0.0.4 you can set I<debug> flag in this method.
+this is just comment-out the below but powerful.
+
+ //console.log(token);
 
 =head1 NOTES
 
