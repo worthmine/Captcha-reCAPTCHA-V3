@@ -13,7 +13,10 @@ my $ua = LWP::UserAgent->new();
 use overload(
     '""'  => sub { $_[0]->name() },
     'cmp' => sub { $_[0]->name() cmp $_[1] },
-    '0+'  => sub { croak __PACKAGE__, " can't be treated as a Number" },
+    '0+'  => sub {
+        carp __PACKAGE__, " shouldn't be treated as a Number";
+        return $_[0]->name();
+    },
 );
 
 sub new {
