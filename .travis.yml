@@ -1,23 +1,24 @@
-dist: trusty
 language: perl
 sudo: false
+
 perl:
-- '5.8'
-- '5.10'
-- '5.12'
-- '5.14'
-- '5.16'
-- '5.18'
-- '5.20'
-- '5.22'
-- '5.24'
-- '5.26'
-- '5.28'
-- '5.30'
-- '5.32'
-#- '5.34' travis or trusy does not have listed it yet
+  - '5.8'
+  - '5.10'
+  - '5.12'
+  - '5.14'
+  - '5.16'
+  - '5.18'
+  - '5.20'
+  - '5.22'
+  - '5.24'
+  - '5.26'
+  - '5.28'
+  - '5.30'
+  - '5.32'
+  - '5.34'
 
 notifications:
   email: false
-  secure: ohvGPXO17ZSEMPO6y8W/OfkM7CLtxGA0jvE+hUXAcqRHVmQUsfWaNV3ldEl4jfDmYX6jo0omuKls0r3VCzaM15IbO064ofB8yu78HR4p3AaKLZzOgENTDjkFGIUiPo+a2L4DQi7uDXYAPnxJK5ETb9yBTS1XdDWPVbhKE55YunN9xRwRVGOH0+C8den3O1vovCHfzJWd0bAPopu7G128iDz2QNkkhzWayFghHW/H96jDsdDYJOXBVX+RL9pk2m3B5Onwb5ucwXDj4xwc8WKIpDIIQiV3pHPBPDR5fSxEMTyvlmoF8IwbHGVauIRPOJa+KCtRpVfMYfm5/r0Q352FaK1IZuWp9HhOgZ34UcXzV867m/kPYUzlZsrYDVkE2iaO1oNgGAZecFINnzchHYcO48s/1R6nUfvBpwVV+aDM3ApWPGGZr94kQgl0QOBxkYTidQLH7Hp/mCLRUMPIQDay40hKF6WAvnubCMX3QDADg1g+CfuXZZLqr68jQz2y0IcFHdmTJNpdxTeMkWm7mJzcFLfeCR9hRgpkfD6wtTZk2vFr99afITMvcYVtippyrGj3pyxp5YaVObFjXXsspyR+xiUyaPv6EX8Pi65WBOi4UXc0OEI0wLdPn+LdPLrnygdvRotMsprhrm38rOZKbVaAglOMW8pJ4/JAk+Dth3Q+Upo=
+  slack:
+    secure: ohvGPXO17ZSEMPO6y8W/OfkM7CLtxGA0jvE+hUXAcqRHVmQUsfWaNV3ldEl4jfDmYX6jo0omuKls0r3VCzaM15IbO064ofB8yu78HR4p3AaKLZzOgENTDjkFGIUiPo+a2L4DQi7uDXYAPnxJK5ETb9yBTS1XdDWPVbhKE55YunN9xRwRVGOH0+C8den3O1vovCHfzJWd0bAPopu7G128iDz2QNkkhzWayFghHW/H96jDsdDYJOXBVX+RL9pk2m3B5Onwb5ucwXDj4xwc8WKIpDIIQiV3pHPBPDR5fSxEMTyvlmoF8IwbHGVauIRPOJa+KCtRpVfMYfm5/r0Q352FaK1IZuWp9HhOgZ34UcXzV867m/kPYUzlZsrYDVkE2iaO1oNgGAZecFINnzchHYcO48s/1R6nUfvBpwVV+aDM3ApWPGGZr94kQgl0QOBxkYTidQLH7Hp/mCLRUMPIQDay40hKF6WAvnubCMX3QDADg1g+CfuXZZLqr68jQz2y0IcFHdmTJNpdxTeMkWm7mJzcFLfeCR9hRgpkfD6wtTZk2vFr99afITMvcYVtippyrGj3pyxp5YaVObFjXXsspyR+xiUyaPv6EX8Pi65WBOi4UXc0OEI0wLdPn+LdPLrnygdvRotMsprhrm38rOZKbVaAglOMW8pJ4/JAk+Dth3Q+Upo=
 
