@@ -3,7 +3,7 @@ use 5.008001;
 use strict;
 use warnings;
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 use Carp qw(carp croak);
 use JSON qw(decode_json);
@@ -104,7 +104,7 @@ sub scripts {
     my $simple  = $self->scriptTag(@_);
     my $id      = $attr{'id'} or croak "missing the id for Form tag";
     my $action  = $attr{'action'} || 'homepage';
-    my $comment = '// ' unless $attr{'debug'};
+    my $comment = $attr{'debug'} ? '' : '// ';
     return <<"EOL";
 $simple
 <script defer>
