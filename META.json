@@ -69,7 +69,7 @@
          "web" : "https://github.com/worthmine/Captcha-reCAPTCHA-V3"
       }
    },
-   "version" : "0.05",
+   "version" : "0.06",
    "x_authority" : "cpan:WORTHMINE",
    "x_contributors" : [
       "Yuki Yoshida(worthmine) <2944869+worthmine@users.noreply.github.com>",
