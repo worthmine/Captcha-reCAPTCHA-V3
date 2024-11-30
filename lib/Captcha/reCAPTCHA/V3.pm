@@ -8,7 +8,6 @@ our $VERSION = "0.05";
 use Carp qw(carp croak);
 use JSON qw(decode_json);
 use LWP::UserAgent;
-my $ua = LWP::UserAgent->new();
 
 use overload(
     '""'  => sub { $_[0]->name() },
@@ -53,10 +52,17 @@ sub verify {
         response => $response || croak "missing response token",
     };
 
-    my $res = $ua->post( $self->{'verify_api'}, $params );
-    return decode_json $res->decoded_content() if $res->is_success();
+    my $ua = LWP::UserAgent->new();
 
-    croak "something wrong to POST by " . $ua->agent(), "\n";
+    # Enable LWP debugging
+    use LWP::Debug qw(+);
+
+    my $res = $ua->post( $self->{'verify_api'}, $params );
+    if  ( $res->is_success ) {
+        return decode_json( $res->decoded_content );
+    } else {
+        croak $res->status_line;
+    } 
 }
 
 sub deny_by_score {
