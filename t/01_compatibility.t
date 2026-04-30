@@ -1,5 +1,10 @@
 use strict;
-use Test::More 0.98 tests => 1;
+use Test::More 0.98 tests => 2;
+
+# test for there is a curl
+my $curl = `which curl`;
+chomp $curl;
+like $curl, qr|/curl$|, "curl command is available";
 
 use Captcha::reCAPTCHA::V3;
 my $rc = Captcha::reCAPTCHA::V3->new( secret => 'Dummy', sitekey => 'Dummy' );

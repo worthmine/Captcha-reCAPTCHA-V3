@@ -46,14 +46,34 @@ sub verify {
     my $response = shift;
     croak "Extra arguments have been set." if @_;
 
-    my $cmd = sprintf(
-        q{curl -sS -X POST %s -d secret=%s -d response=%s},
-        $self->{verify_api},
-        _shell_escape($self->{secret_key}),
-        _shell_escape($response),
+    if ( _has_curl() ) {
+        my $cmd = sprintf(
+            q{curl -sS -X POST %s -d secret=%s -d response=%s},
+            $self->{verify_api},
+            _shell_escape($self->{secret_key}),
+            _shell_escape($response),
+        );
+
+        my $json = `$cmd`or croak "Failed to execute curl command: $cmd";
+        return decode_json($json);
+    }elsif ( !_has_lwp_https() ) {
+        croak "LWP::UserAgent and LWP::Protocol::https are required to verify reCAPTCHA response."; 
+    }
+
+    eval {
+        require LWP::UserAgent;
+        require LWP::Protocol::https;
+    } or croak "LWP::UserAgent and LWP::Protocol::https are required to verify reCAPTCHA response.";
+
+    my $ua = LWP::UserAgent->new;
+    my $res = $ua->post(
+        $self->{verify_api},{
+            secret   => $self->{secret_key},
+            response => $response,
+        },
     );
 
-    my $json = `$cmd` or die "Failed to execute curl command: $cmd";
+    my $json = $res->decoded_content;
     return decode_json($json);
 }
 
@@ -128,6 +148,12 @@ sub _shell_escape {
     $s //= '';
     $s =~ s/'/'"'"'/g;
     return "'$s'";
+}
+
+sub _has_curl {
+    return 1 if system("curl --version >nul 2>&1") == 0;  # Windows
+    return 1 if system("curl --version >/dev/null 2>&1") == 0;  # Unix
+    return 0;
 }
 
 1;
