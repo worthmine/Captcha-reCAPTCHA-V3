@@ -2,6 +2,9 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 
 {{$NEXT}}
 
+0.09 2026-04-30T11:02:22Z
+    - re-add LWP dependencies for some environments
+
 0.08 2026-04-30T01:43:57Z
     - remove LWP dependencies
 
