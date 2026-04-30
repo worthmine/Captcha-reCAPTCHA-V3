@@ -1,6 +1,4 @@
 requires 'perl', '5.008001';
-requires 'LWP::UserAgent';
-requires 'LWP::Protocol::https';
 requires 'JSON', '2.0';
 
 recommends 'JSON::XS';
