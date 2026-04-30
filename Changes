@@ -2,6 +2,9 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 
 {{$NEXT}}
 
+0.11 2026-04-30T23:11:44Z
+    - fixed a bug that additinal file 'nul' was created
+  
 0.10 2026-04-30T14:22:48Z
     - fixed a bug around secret
 
