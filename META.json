@@ -42,7 +42,7 @@
       },
       "runtime" : {
          "recommends" : {
-            "JSON::XS" : "0"
+            "JSON::PP" : "0"
          },
          "requires" : {
             "JSON" : "2.0",
@@ -73,6 +73,6 @@
       "Yuki Yoshida(worthmine) <2944869+worthmine@users.noreply.github.com>",
       "worthmine <worthmine@cpan.org>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.16",
+   "x_serialization_backend" : "JSON::PP version 4.18",
    "x_static_install" : 1
 }
