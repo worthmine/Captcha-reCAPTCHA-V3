@@ -50,7 +50,7 @@ sub verify {
         my $cmd = sprintf(
             q{curl -sS -X POST %s -d secret=%s -d response=%s},
             $self->{verify_api},
-            _shell_escape($self->{secret_key}),
+            _shell_escape($self->{secret}),
             _shell_escape($response),
         );
 
@@ -68,7 +68,7 @@ sub verify {
     my $ua = LWP::UserAgent->new;
     my $res = $ua->post(
         $self->{verify_api},{
-            secret   => $self->{secret_key},
+            secret   => $self->{secret},
             response => $response,
         },
     );
