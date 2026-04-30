@@ -151,8 +151,11 @@ sub _shell_escape {
 }
 
 sub _has_curl {
-    return 1 if system("curl --version >nul 2>&1") == 0;  # Windows
-    return 1 if system("curl --version >/dev/null 2>&1") == 0;  # Unix
+    if ( $^O eq 'MSWin32' ) {   # Windows
+         return 1 if system("curl --version >nul 2>&1") == 0;
+    } else {    # Unix-like
+         return 1 if system("curl --version >/dev/null 2>&1") == 0;
+    }
     return 0;
 }
 
