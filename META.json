@@ -46,6 +46,7 @@
          },
          "requires" : {
             "JSON" : "2.0",
+            "Module::Build::Tiny" : "0.039",
             "perl" : "5.008001"
          }
       },
