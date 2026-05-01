@@ -33,7 +33,6 @@ jobs:
           ./Build test
 
   integration-verify:
-    if: ${{ secrets.RECAPTCHA_TEST_SECRET != '' && secrets.RECAPTCHA_TEST_RESPONSE != '' }}
     runs-on: ubuntu-latest
 
     steps:
