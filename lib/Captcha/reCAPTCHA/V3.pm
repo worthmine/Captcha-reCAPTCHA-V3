@@ -1,5 +1,5 @@
 package Captcha::reCAPTCHA::V3;
-use 5.008001;
+require 5.10.1;
 use strict;
 use warnings;
 
