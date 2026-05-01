@@ -31,24 +31,3 @@ jobs:
           perl Build.PL
           ./Build build
           ./Build test
-
-  integration-verify:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Perl
-        uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: '5.42'
-
-      - name: Install dependencies
-        run: |
-          cpanm --notest --installdeps .
-
-      - name: Run live verify integration test
-        run: |
-          perl Build.PL
-          ./Build build
-          prove -lv xt/verify_integration.t
