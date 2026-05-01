@@ -3,7 +3,7 @@ require 5.10.1;
 use strict;
 use warnings;
 
-our $VERSION = "0.11";
+our $VERSION = "0.12";
 
 use Carp qw(carp croak);
 use JSON::PP qw(decode_json);
