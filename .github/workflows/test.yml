@@ -31,3 +31,29 @@ jobs:
           perl Build.PL
           ./Build build
           ./Build test
+
+  integration-verify:
+    if: ${{ secrets.RECAPTCHA_TEST_SECRET != '' && secrets.RECAPTCHA_TEST_RESPONSE != '' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.42'
+
+      - name: Install dependencies
+        run: |
+          cpanm --notest --installdeps .
+
+      - name: Run live verify integration test
+        env:
+          RECAPTCHA_TEST_SECRET: ${{ secrets.RECAPTCHA_TEST_SECRET }}
+          RECAPTCHA_TEST_RESPONSE: ${{ secrets.RECAPTCHA_TEST_RESPONSE }}
+          RECAPTCHA_EXPECT_SUCCESS: ${{ secrets.RECAPTCHA_EXPECT_SUCCESS }}
+        run: |
+          perl Build.PL
+          ./Build build
+          prove -lv xt/verify_integration.t
