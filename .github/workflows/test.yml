@@ -48,10 +48,6 @@ jobs:
           cpanm --notest --installdeps .
 
       - name: Run live verify integration test
-        env:
-          RECAPTCHA_TEST_SECRET: ${{ secrets.RECAPTCHA_TEST_SECRET }}
-          RECAPTCHA_TEST_RESPONSE: ${{ secrets.RECAPTCHA_TEST_RESPONSE }}
-          RECAPTCHA_EXPECT_SUCCESS: ${{ secrets.RECAPTCHA_EXPECT_SUCCESS }}
         run: |
           perl Build.PL
           ./Build build
