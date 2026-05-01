@@ -1,4 +1,4 @@
-requires 'perl', '5.008001';
+requires 'perl', '5.10.1';
 requires 'Module::Build::Tiny', '0.039';
 requires 'JSON', '2.0';
 
