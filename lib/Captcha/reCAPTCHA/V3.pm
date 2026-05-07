@@ -47,14 +47,21 @@ sub verify {
     croak "Extra arguments have been set." if @_;
 
     if ( _has_curl() ) {
-        my $cmd = sprintf(
-            q{curl -sS -X POST %s -d secret=%s -d response=%s},
+        my @cmd = (
+            'curl', '-sS',
+            '-X', 'POST',
             $self->{verify_api},
-            _shell_escape($self->{secret}),
-            _shell_escape($response),
+            '-d', "secret=$self->{secret}",
+            '-d', "response=$response",
         );
-
-        my $json = `$cmd`or croak "Failed to execute curl command: $cmd";
+        open( my $fh, '-|', @cmd )
+            or croak "Failed to start curl process: " . join( ' ', @cmd );
+        my $json = do {
+            local $/;
+            <$fh>;
+        };
+        close $fh;
+        croak "curl returned empty response" unless $json;
         return decode_json($json);
     }elsif ( !_has_lwp_https() ) {
         croak "LWP::UserAgent and LWP::Protocol::https are required to verify reCAPTCHA response."; 
@@ -143,11 +150,12 @@ EOL
 }
 
 # utils =======================================================================
-sub _shell_escape {
-    my ($s) = @_;
-    $s //= '';
-    $s =~ s/'/'"'"'/g;
-    return "'$s'";
+sub _has_lwp_https {
+    eval {
+        require LWP::UserAgent;
+        require LWP::Protocol::https;
+    };
+    return !$@;
 }
 
 sub _has_curl {
