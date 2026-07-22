@@ -25,6 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           cpanm --notest --installdeps .
+          cpanm --notest --quiet HTTP::Tiny
 
       - name: Run tests
         run: |
