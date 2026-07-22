@@ -206,7 +206,8 @@ sub _verify_with_curl {
         _shell_escape($response),
     );
 
-    my $json = `$cmd` or croak "Failed to execute curl command: $cmd";
+    my $json = `$cmd`;
+    croak "Failed to execute curl command: $cmd" if $?;
     return $json;
 }
 

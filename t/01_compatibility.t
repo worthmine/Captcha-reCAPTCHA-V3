@@ -74,7 +74,8 @@ my $rc = Captcha::reCAPTCHA::V3->new( secret => 'Dummy', sitekey => 'Dummy' );
     local *Captcha::reCAPTCHA::V3::_has_lwp_https     = sub { 0 };
     local *Captcha::reCAPTCHA::V3::_has_curl          = sub { 0 };
 
-    my $error = eval { $rc->verify('dummy-response-token'); 1 } ? '' : $@;
+    my $error = '';
+    eval { $rc->verify('dummy-response-token'); 1 } or $error = $@;
     like $error, qr/HTTP::Tiny.*LWP::UserAgent.*curl/, 'verify croaks when no transport is available';
 }
 
