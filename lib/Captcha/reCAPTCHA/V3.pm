@@ -360,8 +360,8 @@ and L<Issues|https://github.com/worthmine/Captcha-reCAPTCHA-V3/issues> are welco
 
 Copyright (C) worthmine.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This library is free software; you can redistribute it and/or modify it under
+the terms of the MIT license.
 
 =head1 AUTHOR
 
