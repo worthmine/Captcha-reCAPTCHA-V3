@@ -4,6 +4,9 @@ use Test::More 0.98;
 
 use Captcha::reCAPTCHA::V3;
 
+plan skip_all => 'set RECAPTCHA_RUN_LIVE_TESTS=1 to run live verification tests'
+    unless $ENV{RECAPTCHA_RUN_LIVE_TESTS};
+
 # Google's official test keys: always return success:true with any token.
 # https://developers.google.com/recaptcha/docs/faq#id-like-to-run-automated-tests-with-recaptcha-v2-i-have-read-the-dev-guide-and-ran-the-code-loop-in-the-demo-but-how-do-i-automate-integration-tests-with-recaptcha
 my $secret   = $ENV{RECAPTCHA_TEST_SECRET}   // '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';

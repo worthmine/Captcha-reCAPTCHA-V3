@@ -46,34 +46,17 @@ sub verify {
     my $response = shift;
     croak "Extra arguments have been set." if @_;
 
-    if ( _has_curl() ) {
-        my $cmd = sprintf(
-            q{curl -sS -X POST %s -d secret=%s -d response=%s},
-            $self->{verify_api},
-            _shell_escape($self->{secret}),
-            _shell_escape($response),
-        );
-
-        my $json = `$cmd`or croak "Failed to execute curl command: $cmd";
-        return decode_json($json);
-    }elsif ( !_has_lwp_https() ) {
-        croak "LWP::UserAgent and LWP::Protocol::https are required to verify reCAPTCHA response."; 
+    my $json;
+    if ( _has_http_tiny_ssl() ) {
+        $json = $self->_verify_with_http_tiny($response);
+    } elsif ( _has_lwp_https() ) {
+        $json = $self->_verify_with_lwp($response);
+    } elsif ( _has_curl() ) {
+        $json = $self->_verify_with_curl($response);
+    } else {
+        croak "HTTP::Tiny with SSL support, LWP::UserAgent with LWP::Protocol::https, or curl is required to verify reCAPTCHA response.";
     }
 
-    eval {
-        require LWP::UserAgent;
-        require LWP::Protocol::https;
-    } or croak "LWP::UserAgent and LWP::Protocol::https are required to verify reCAPTCHA response.";
-
-    my $ua = LWP::UserAgent->new;
-    my $res = $ua->post(
-        $self->{verify_api},{
-            secret   => $self->{secret},
-            response => $response,
-        },
-    );
-
-    my $json = $res->decoded_content;
     return decode_json($json);
 }
 
@@ -159,6 +142,74 @@ sub _has_curl {
     return 0;
 }
 
+sub _has_http_tiny_ssl {
+    return eval {
+        require HTTP::Tiny;
+        HTTP::Tiny->can_ssl;
+    } ? 1 : 0;
+}
+
+sub _has_lwp_https {
+    return eval {
+        require LWP::UserAgent;
+        require LWP::Protocol::https;
+        1;
+    } ? 1 : 0;
+}
+
+sub _verify_with_http_tiny {
+    my ( $self, $response ) = @_;
+
+    require HTTP::Tiny;
+    my $res = HTTP::Tiny->new->post_form(
+        $self->{verify_api},
+        {
+            secret   => $self->{secret},
+            response => $response,
+        },
+    );
+
+    croak "Failed to verify reCAPTCHA response with HTTP::Tiny: $res->{status} $res->{reason}"
+        unless $res->{success};
+
+    return $res->{content};
+}
+
+sub _verify_with_lwp {
+    my ( $self, $response ) = @_;
+
+    require LWP::UserAgent;
+    require LWP::Protocol::https;
+
+    my $ua = LWP::UserAgent->new;
+    my $res = $ua->post(
+        $self->{verify_api},
+        {
+            secret   => $self->{secret},
+            response => $response,
+        },
+    );
+
+    croak "Failed to verify reCAPTCHA response with LWP: " . $res->status_line
+        unless $res->is_success;
+
+    return $res->decoded_content;
+}
+
+sub _verify_with_curl {
+    my ( $self, $response ) = @_;
+
+    my $cmd = sprintf(
+        q{curl -sS -X POST %s -d secret=%s -d response=%s},
+        $self->{verify_api},
+        _shell_escape($self->{secret}),
+        _shell_escape($response),
+    );
+
+    my $json = `$cmd` or croak "Failed to execute curl command: $cmd";
+    return $json;
+}
+
 1;
 __END__
  
@@ -235,6 +286,9 @@ The default I<query_name> is 'g-recaptcha-response' and it is stocked in constru
 But now string-context provides you to get I<query_name> so we don't have to care about it.
 
 The response contains JSON so it returns decoded value from JSON.
+
+When possible, this method verifies with C<HTTP::Tiny>. If SSL support is not
+available there, it falls back to C<LWP::UserAgent>, and then to C<curl>.
 
  unless ( $content->{'success'} ) {
     # code for failing like below

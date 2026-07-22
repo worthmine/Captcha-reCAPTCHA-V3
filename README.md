@@ -72,6 +72,9 @@ But now string-context provides you to get _query\_name_ so we don't have to car
 
 The response contains JSON so it returns decoded value from JSON.
 
+When possible, this method verifies with `HTTP::Tiny`. If SSL support is not
+available there, it falls back to `LWP::UserAgent`, and then to `curl`.
+
     unless ( $content->{'success'} ) {
        # code for failing like below
        die 'fail to verify reCAPTCHA: ', @{ $content->{'error-codes'} }, "\n";
@@ -137,7 +140,7 @@ and [Issues](https://github.com/worthmine/Captcha-reCAPTCHA-V3/issues) are welco
 Copyright (C) worthmine.
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+it under the terms of the MIT license.
 
 # AUTHOR
 

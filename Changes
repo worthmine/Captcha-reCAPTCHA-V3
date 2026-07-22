@@ -2,6 +2,9 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 
 {{$NEXT}}
 
+    - prefer HTTP::Tiny with SSL support before LWP or curl for verification
+    - changed the distribution license to MIT
+
 0.12 2026-05-01T01:21:15Z
     - updated for tests
 
@@ -44,4 +47,3 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 0.01 2020-02-28T04:19:27Z
 
     - original version
-
