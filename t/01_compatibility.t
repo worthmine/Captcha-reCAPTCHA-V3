@@ -22,7 +22,7 @@ SKIP: {
 SKIP: {
     skip "HTTP::Tiny is not available", 2 unless eval { require HTTP::Tiny };
     my $ua  = HTTP::Tiny->new;
-    skip "SSL is not available in HTTP::Tiny", 2 unless $ua->can_ssl();
+    skip "SSL is not available in HTTP::Tiny", 2 unless !$ua->can('can_ssl') || $ua->can_ssl();
     my $content = $rc->get_json_with_http_tiny('dummy-response-token');
     is $content->{success}, 0, "succeed to catch failure with HTTP::Tiny";
     is $content->{'error-codes'}[0], 'invalid-input-response', "succeed to catch 'invalid-input-secret' with HTTP::Tiny";

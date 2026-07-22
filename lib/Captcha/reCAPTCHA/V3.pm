@@ -65,7 +65,7 @@ sub get_json_with_http_tiny {
 
     return {} unless eval { require HTTP::Tiny };
     my $ua  = HTTP::Tiny->new;
-    return {} unless $ua->can_ssl();
+    return {} unless !$ua->can('can_ssl') || $ua->can_ssl();
 
     my $res = try { $ua->post_form(
         $self->{verify_api},
