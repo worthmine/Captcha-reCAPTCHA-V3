@@ -3,7 +3,7 @@ require 5.10.1;
 use strict;
 use warnings;
 
-our $VERSION = "0.13";
+our $VERSION = "0.14";
 
 use Carp qw(carp croak);
 use JSON::MaybeXS;

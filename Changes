@@ -2,7 +2,7 @@ Revision history for Perl extension CAPTCHA-reCAPTCHA-V3
 
 {{$NEXT}}
 
-0.13 2026-07-23T03:53:14Z
+0.14 2026-07-23T03:55:59Z
     - Update verification method to use HTTP::Tiny
     - adjust script tags for async loading
 
